@@ -1,0 +1,15 @@
+num = 153
+original_num = num  
+sum = 0
+def recursive_armstrong(num, sum):
+    if num == 0:
+        return sum
+    else:
+        digit = num % 10
+        sum += digit ** 3
+        return recursive_armstrong(num // 10, sum)
+sum = recursive_armstrong(num, sum)
+if sum == original_num:
+    print(f"{original_num} is an Armstrong number")
+else:
+    print(f"{original_num} is not an Armstrong number")
