@@ -1,0 +1,20 @@
+def is_prime(n, divisor=2):
+    if n <= 1:
+        return False
+    if divisor * divisor > n:
+        return True
+    if n % divisor == 0:
+        return False
+    return is_prime(n, divisor + 1)
+
+def primes_between(start, end):
+    if start > end:
+        return []
+    if is_prime(start):
+        return [start] + primes_between(start + 1, end)
+    return primes_between(start + 1, end)
+
+# Example usage
+start_prime = 5
+end_prime = 19
+print(primes_between(start_prime, end_prime))
