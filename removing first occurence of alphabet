@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+
+int calculateCost(char *s) {
+    int cost = 0;
+    int freq[26] = {0};
+    
+    for (int i = 0; s[i]; i++) {
+        if (s[i] >= 'a' && s[i] <= 'z') {
+            if (freq[s[i] - 'a'] == 0) {
+                freq[s[i] - 'a']++;
+            } else {
+                cost++;
+            }
+        }
+    }
+    return cost;
+}
+
+void replaceAndMinimize(char *s) {
+    int len = strlen(s);
+    for (int i = 0; i < len; i++) {
+        if (s[i] == '?') {
+            s[i] = 'a'; // Replace '?' with 'a'
+        }
+    }
+}
+
+int main() {
+    char s[] = "aab??c";
+    replaceAndMinimize(s);
+    int cost = calculateCost(s);
+    printf("Minimized string: %s\n", s);
+    printf("Cost: %d\n", cost);
+    return 0;
+}
