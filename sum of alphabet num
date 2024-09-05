@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <string.h>
+
+int minCost(char *s) {
+    int cost = 0;
+    int count[26] = {0};
+    int len = strlen(s);
+
+    for (int i = 0; i < len; i++) {
+        if (s[i] == '?') {
+            char minChar = 'a';
+            int minCount = count[0];
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (count[c - 'a'] < minCount) {
+                    minCount = count[c - 'a'];
+                    minChar = c;
+                }
+            }
+            s[i] = minChar;
+        }
+        cost += count[s[i] - 'a'];
+        count[s[i] - 'a']++;
+    }
+    return cost;
+}
+
+int main() {
+    char s[] = "a?b?c??";
+    int result = minCost(s);
+    printf("Minimum cost: %d\n", result);
+    return 0;
+}
