@@ -1,0 +1,4 @@
+arr1=[1,2,3,4,5,5]
+arr2=[2,4,3,8,6,5,5,5]
+result=list(set(arr1).intersection(arr2))
+print(result)
