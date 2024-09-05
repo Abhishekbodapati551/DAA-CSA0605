@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int compare(const void *a, const void *b) {
+    return (*(char *)a - *(char *)b);
+}
+
+int canBreak(char *s1, char *s2) {
+    int n = strlen(s1);
+    qsort(s1, n, sizeof(char), compare);
+    qsort(s2, n, sizeof(char), compare);
+    
+    int s1BreaksS2 = 1, s2BreaksS1 = 1;
+    
+    for (int i = 0; i < n; i++) {
+        if (s1[i] < s2[i]) s1BreaksS2 = 0;
+        if (s2[i] < s1[i]) s2BreaksS1 = 0;
+    }
+    
+    return s1BreaksS2 || s2BreaksS1;
+}
+
+int main() {
+    char s1[] = "abc";
+    char s2[] = "xya";
+    
+    if (canBreak(s1, s2)) {
+        printf("One string can break the other.\n");
+    } else {
+        printf("Neither string can break the other.\n");
+    }
+    
+    return 0;
+}
