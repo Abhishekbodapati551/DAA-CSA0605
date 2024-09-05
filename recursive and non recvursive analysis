@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+unsigned long long non_recursive_factorial(int n) {
+    unsigned long long result = 1;
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+unsigned long long recursive_factorial(int n) {
+    if (n == 0) {
+        return 1;
+    }
+    return n * recursive_factorial(n - 1);
+}
+
+int main() {
+    int number = 5;
+
+    printf("Non-Recursive Factorial of %d: %llu\n", number, non_recursive_factorial(number));
+
+    printf("Recursive Factorial of %d: %llu\n", number, recursive_factorial(number));
+
+    return 0;
+}
