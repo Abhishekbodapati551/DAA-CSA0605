@@ -1,0 +1,67 @@
+import math
+
+points = [(2, 3), (12, 30), (40, 50), (5, 1), (12, 10), (3, 4)]
+
+# Sorting points by x-coordinate
+points_sorted_by_x = sorted(points, key=lambda point: point[0])
+
+# Base case brute-force solution
+min_dist = float('inf')
+n = len(points_sorted_by_x)
+
+# If there are 3 or fewer points, directly compute the minimum distance
+if n <= 3:
+    for i in range(n):
+        for j in range(i + 1, n):
+            dist = math.sqrt((points_sorted_by_x[i][0] - points_sorted_by_x[j][0]) ** 2 + 
+                             (points_sorted_by_x[i][1] - points_sorted_by_x[j][1]) ** 2)
+            if dist < min_dist:
+                min_dist = dist
+
+# Else, we proceed with divide-and-conquer without recursion
+else:
+    mid = n // 2
+    midpoint = points_sorted_by_x[mid]
+
+    # Brute-force for the left half
+    min_dist_left = float('inf')
+    for i in range(mid):
+        for j in range(i + 1, mid):
+            dist = math.sqrt((points_sorted_by_x[i][0] - points_sorted_by_x[j][0]) ** 2 + 
+                             (points_sorted_by_x[i][1] - points_sorted_by_x[j][1]) ** 2)
+            if dist < min_dist_left:
+                min_dist_left = dist
+
+    # Brute-force for the right half
+    min_dist_right = float('inf')
+    for i in range(mid, n):
+        for j in range(i + 1, n):
+            dist = math.sqrt((points_sorted_by_x[i][0] - points_sorted_by_x[j][0]) ** 2 + 
+                             (points_sorted_by_x[i][1] - points_sorted_by_x[j][1]) ** 2)
+            if dist < min_dist_right:
+                min_dist_right = dist
+
+    # Finding the minimum of the two halves
+    min_dist = min(min_dist_left, min_dist_right)
+
+    # Now, we create the strip of points that are close to the dividing line
+    strip = []
+    for i in range(n):
+        if abs(points_sorted_by_x[i][0] - midpoint[0]) < min_dist:
+            strip.append(points_sorted_by_x[i])
+
+    # Sort the strip by y-coordinate
+    strip.sort(key=lambda point: point[1])
+
+    # Check the points in the strip for the closest pair
+    for i in range(len(strip)):
+        for j in range(i + 1, len(strip)):
+            if strip[j][1] - strip[i][1] < min_dist:
+                dist = math.sqrt((strip[i][0] - strip[j][0]) ** 2 + (strip[i][1] - strip[j][1]) ** 2)
+                if dist < min_dist:
+                    min_dist = dist
+            else:
+                break
+
+# Output the final result
+print(f"The smallest distance is: {min_dist:.4f}")
