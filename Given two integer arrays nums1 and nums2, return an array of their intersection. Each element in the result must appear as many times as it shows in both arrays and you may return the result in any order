@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct HashMap {
+    int *keys;
+    int *values;
+    int size;
+    int capacity;
+} HashMap;
+
+HashMap* createHashMap(int capacity) {
+    HashMap *map = (HashMap *)malloc(sizeof(HashMap));
+    map->keys = (int *)calloc(capacity, sizeof(int));
+    map->values = (int *)calloc(capacity, sizeof(int));
+    map->size = 0;
+    map->capacity = capacity;
+    return map;
+}
+
+int hash(int key, int capacity) {
+    return abs(key) % capacity;
+}
+
+void insertHashMap(HashMap *map, int key) {
+    int index = hash(key, map->capacity);
+    while (map->keys[index] != 0 && map->keys[index] != key) {
+        index = (index + 1) % map->capacity;
+    }
+    if (map->keys[index] == 0) {
+        map->keys[index] = key;
+        map->values[index] = 1;
+        map->size++;
+    } else {
+        map->values[index]++;
+    }
+}
+
+int getHashMap(HashMap *map, int key) {
+    int index = hash(key, map->capacity);
+    while (map->keys[index] != 0) {
+        if (map->keys[index] == key) {
+            return map->values[index];
+        }
+        index = (index + 1) % map->capacity;
+    }
+    return 0;
+}
+
+int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
+    HashMap *map1 = createHashMap(nums1Size);
+    HashMap *map2 = createHashMap(nums2Size);
+
+    for (int i = 0; i < nums1Size; i++) {
+        insertHashMap(map1, nums1[i]);
+    }
+
+    for (int i = 0; i < nums2Size; i++) {
+        insertHashMap(map2, nums2[i]);
+    }
+
+    int *result = (int *)malloc(sizeof(int) * nums1Size);
+    int resultSize = 0;
+
+    for (int i = 0; i < nums1Size; i++) {
+        int count1 = getHashMap(map1, nums1[i]);
+        int count2 = getHashMap(map2, nums1[i]);
+        if (count1 > 0 && count2 > 0) {
+            int minCount = count1 < count2 ? count1 : count2;
+            for (int j = 0; j < minCount; j++) {
+                result[resultSize++] = nums1[i];
+            }
+            map1->values[hash(nums1[i], map1->capacity)] = 0;
+        }
+    }
+
+    *returnSize = resultSize;
+
+    free(map1->keys);
+    free(map1->values);
+    free(map1);
+    free(map2->keys);
+    free(map2->values);
+    free(map2);
+
+    return result;
+}
+
+int main() {
+    int nums1[] = {1, 2, 2, 1};
+    int nums2[] = {2, 2};
+    int nums1Size = sizeof(nums1) / sizeof(nums1[0]);
+    int nums2Size = sizeof(nums2) / sizeof(nums2[0]);
+
+    int returnSize;
+    int *result = intersect(nums1, nums1Size, nums2, nums2Size, &returnSize);
+
+    printf("Intersection: ");
+    for (int i = 0; i < returnSize; i++) {
+        printf("%d ", result[i]);
+    }
+    printf("\n");
+
+    free(result);
+    return 0;
+}
