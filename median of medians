@@ -1,0 +1,36 @@
+arr = [12, 3, 5, 7, 19, 26, 11, 6, 8]
+k = 4  
+low = 0
+high = len(arr) - 1
+while low <= high:
+    if low == high:
+        result = arr[low]
+        break
+    n = high - low + 1
+    if n < 10:
+        sorted_arr = sorted(arr[low:high + 1])
+        pivot_value = sorted_arr[n // 2]
+    else:
+        medians = []
+        for i in range(low, high + 1, 5):
+            group = sorted(arr[i:min(i + 5, high + 1)])
+            medians.append(group[len(group) // 2])
+        sorted_medians = sorted(medians)
+        pivot_value = sorted_medians[len(medians) // 2]
+    pivot_index = arr.index(pivot_value)
+    arr[pivot_index], arr[high] = arr[high], arr[pivot_index]
+    pivot_value = arr[high]
+    store_index = low
+    for i in range(low, high):
+        if arr[i] < pivot_value:
+            arr[i], arr[store_index] = arr[store_index], arr[i]
+            store_index += 1
+    arr[store_index], arr[high] = arr[high], arr[store_index]
+    if k == store_index:
+        result = arr[k]
+        break
+    elif k < store_index:
+        high = store_index - 1
+    else:
+        low = store_index + 1
+print(f"The {k + 1}-th smallest element is: {result}")
