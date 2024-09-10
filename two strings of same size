@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int compareStrings(const void* a, const void* b) {
+    return (*(char*)a - *(char*)b);
+}
+
+int canBreak(char* s1, char* s2) {
+    int len = strlen(s1);
+    char sortedS1[len + 1];
+    char sortedS2[len + 1];
+
+    strcpy(sortedS1, s1);
+    strcpy(sortedS2, s2);
+    qsort(sortedS1, len, sizeof(char), compareStrings);
+    qsort(sortedS2, len, sizeof(char), compareStrings);
+
+    int canS1BreakS2 = 1;
+    int canS2BreakS1 = 1;
+
+    for (int i = 0; i < len; i++) {
+        if (sortedS1[i] < sortedS2[i]) {
+            canS1BreakS2 = 0;
+        }
+        if (sortedS2[i] < sortedS1[i]) {
+            canS2BreakS1 = 0;
+        }
+    }
+
+    return canS1BreakS2 || canS2BreakS1;
+}
+
+int main() {
+    char s1[] = "abc";
+    char s2[] = "bca";
+
+    if (canBreak(s1, s2)) {
+        printf("Some permutation of s1 can break some permutation of s2 or vice versa.\n");
+    } else {
+        printf("No permutation of s1 can break any permutation of s2.\n");
+    }
+
+    return 0;
+}
