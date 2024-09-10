@@ -1,0 +1,17 @@
+def kidsWithCandies(candies, extraCandies):
+    max_candies = max(candies)
+    
+    result = [candy + extraCandies >= max_candies for candy in candies]
+    
+    return result
+
+
+if __name__ == "__main__":
+    candies = [2, 3, 5, 1, 3]
+    extraCandies = 3
+    
+    
+    result = kidsWithCandies(candies, extraCandies)
+    
+    
+    print(result)  
