@@ -1,0 +1,33 @@
+class BinaryMatrix:
+    def __init__(self, matrix):
+        self.matrix = matrix
+    
+    def get(self, row, col):
+        return self.matrix[row][col]
+    
+    def dimensions(self):
+        return (len(self.matrix), len(self.matrix[0]))
+
+def leftMostColumnWithOne(binaryMatrix):
+    rows, cols = binaryMatrix.dimensions()
+    
+    row = 0
+    col = cols - 1
+    
+    min_col_with_one = cols
+    
+    while row < rows and col >= 0:
+        if binaryMatrix.get(row, col) == 1:
+            min_col_with_one = col
+            col -= 1
+        else:
+            row += 1
+    
+    return min_col_with_one if min_col_with_one < cols else -1
+
+binaryMatrix = BinaryMatrix([
+    [0, 0, 0, 1],
+    [0, 0, 1, 1],
+    [0, 1, 1, 1]
+])
+print(leftMostColumnWithOne(binaryMatrix))  # Output: 1
