@@ -1,0 +1,13 @@
+def find_max_min(arr):
+    if not arr:
+        return None, None  
+
+    min_val = arr[0]
+    max_val = arr[-1]
+
+    return min_val, max_val
+
+array = [2, 4, 6, 8, 10, 12, 14, 18]
+min_value, max_value = find_max_min(array)
+print("Min =", min_value)
+print("Max =", max_value)
