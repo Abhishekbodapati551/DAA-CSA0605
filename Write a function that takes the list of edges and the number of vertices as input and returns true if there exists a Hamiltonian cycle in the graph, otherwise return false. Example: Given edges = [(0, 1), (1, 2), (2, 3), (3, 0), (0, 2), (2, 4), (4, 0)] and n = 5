@@ -1,0 +1,23 @@
+def has_hamiltonian_cycle(graph, n):
+    def backtrack(v, path):
+        if len(path) == n:
+            return path[0] in graph[path[-1]]  
+
+        for neighbor in graph[v]:
+            if neighbor not in path:
+                path.append(neighbor)
+                if backtrack(neighbor, path):
+                    return True
+                path.pop()
+        return False
+
+    adjacency_list = [[] for _ in range(n)]
+    for u, v in graph:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    return backtrack(0, [0])
+
+edges = [(0, 1), (1, 2), (2, 3), (3, 0), (0, 2), (2, 4), (4, 0)]
+n = 5
+print(has_hamiltonian_cycle(edges, n))  # Output: True
