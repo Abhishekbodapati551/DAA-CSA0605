@@ -1,0 +1,50 @@
+def is_valid_color(graph, colors, vertex, color):
+    for neighbor in graph[vertex]:
+        if colors[neighbor] == color:
+            return False
+    return True
+
+def graph_coloring_util(graph, colors, vertex, num_colors):
+    if vertex == len(graph):
+        return True
+    
+    for color in range(1, num_colors + 1):
+        if is_valid_color(graph, colors, vertex, color):
+            colors[vertex] = color
+            if graph_coloring_util(graph, colors, vertex + 1, num_colors):
+                return True
+            # Backtrack
+            colors[vertex] = 0
+    
+    return False
+
+def find_min_colors(graph):
+    n = len(graph)
+    colors = [0] * n  
+    num_colors = 1
+    
+    while True:
+        if graph_coloring_util(graph, colors, 0, num_colors):
+            return num_colors
+        num_colors += 1
+
+def maximize_coloring(n, edges):
+    # Convert edges to adjacency list
+    graph = [[] for _ in range(n)]
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    min_colors = find_min_colors(graph)
+    
+    return n - (min_colors - 1)  
+
+def main():
+    edges = [(0, 1), (1, 2), (2, 3), (3, 0), (0, 2)]
+    n = 4  
+
+    max_coloring = maximize_coloring(n, edges)
+    print(f"Maximum number of regions you can color: {max_coloring}")
+
+if __name__ == "__main__":
+    main()
