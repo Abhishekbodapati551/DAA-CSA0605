@@ -1,0 +1,26 @@
+def has_hamiltonian_cycle(edges, n):
+    adjacency_list = [[] for _ in range(n)]
+    for u, v in edges:
+        adjacency_list[u].append(v)
+        adjacency_list[v].append(u)
+
+    def backtrack(path):
+        if len(path) == n:
+        
+            return path[0] in adjacency_list[path[-1]]
+
+        current_vertex = path[-1]
+        for neighbor in adjacency_list[current_vertex]:
+            if neighbor not in path:
+                path.append(neighbor)
+                if backtrack(path):
+                    return True
+                path.pop()  
+        return False
+
+    return backtrack([0])
+
+ 
+edges = [(0, 1), (1, 2), (2, 3), (3, 0), (0, 2)]
+n = 4
+print(has_hamiltonian_cycle(edges, n))  # Output: True
