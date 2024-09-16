@@ -1,0 +1,11 @@
+import itertools
+
+def listPermutations(n):
+    nums = list(range(1, n + 1))
+    permutations = list(itertools.permutations(nums))
+    
+    for perm in permutations:
+        print(perm)
+
+n = 3
+listPermutations(n)
