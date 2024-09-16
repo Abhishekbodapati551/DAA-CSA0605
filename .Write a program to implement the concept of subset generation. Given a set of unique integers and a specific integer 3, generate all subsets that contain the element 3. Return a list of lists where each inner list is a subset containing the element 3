@@ -1,0 +1,19 @@
+def subsets_containing_element(E, x):
+    def backtrack(start, path):
+        if x in path:
+            result.append(path[:])
+        
+
+        for i in range(start, len(E)):
+            path.append(E[i])
+            backtrack(i + 1, path)
+            path.pop()  
+
+    E.sort() 
+    result = []
+    backtrack(0, [])
+    return result
+
+E = [2, 3, 4, 5]
+x = 3
+print(subsets_containing_element(E, x))
