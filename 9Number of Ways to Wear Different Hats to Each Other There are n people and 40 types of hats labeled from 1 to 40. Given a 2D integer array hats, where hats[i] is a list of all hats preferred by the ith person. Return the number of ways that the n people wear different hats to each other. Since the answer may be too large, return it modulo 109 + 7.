@@ -1,0 +1,23 @@
+MOD = 10**9 + 7
+
+    n = len(hats)
+    
+    hat_to_people = [[] for _ in range(41)]
+    for person in range(n):
+        for hat in hats[person]:
+            hat_to_people[hat].append(person)
+    
+    dp = [0] * (1 << n)
+    dp[0] = 1
+    
+    for h in range(1, 41):
+        for mask in range((1 << n) - 1, -1, -1):
+            for person in hat_to_people[h]:
+                if mask & (1 << person) == 0:  # person hasn't been assigned a hat
+                    new_mask = mask | (1 << person)
+                    dp[new_mask] = (dp[new_mask] + dp[mask]) % MOD
+    
+    return dp[(1 << n) - 1]
+
+hats = [[3, 4], [4, 5], [5]]
+print(number_ways(hats)) 
