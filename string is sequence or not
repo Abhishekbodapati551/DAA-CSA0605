@@ -1,0 +1,37 @@
+class TreeNode:
+    def __init__(self, value=0, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+def isValidSequence(root, sequence):
+    """
+    Check if the given sequence is a valid sequence from root to leaf in the binary tree.
+    """
+    def dfs(node, seq_index):
+        if not node:
+            return False
+        
+        if seq_index == len(sequence):
+            return node.left is None and node.right is None
+        
+        if node.value != sequence[seq_index]:
+            return False
+        
+        return (dfs(node.left, seq_index + 1) or dfs(node.right, seq_index + 1))
+    
+    return dfs(root, 0)
+
+if __name__ == "__main__":
+    root = TreeNode(0)
+    root.left = TreeNode(1)
+    root.right = TreeNode(0)
+    root.left.left = TreeNode(0)
+    root.left.right = TreeNode(1)
+    root.right.right = TreeNode(1)
+    
+    # Example sequence
+    sequence = [0, 1, 0]
+    
+    # Check if the sequence is valid
+    print(isValidSequence(root, sequence))  # Output: True
