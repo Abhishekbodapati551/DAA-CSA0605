@@ -1,0 +1,32 @@
+from itertools import combinations
+
+def generate_subset_sums(nums):
+    subset_sums = set()
+    n = len(nums)
+    for i in range(n + 1):
+        for subset in combinations(nums, i):
+            subset_sums.add(sum(subset))
+    return subset_sums
+
+def can_sum_exactly(arr, target):
+    mid = len(arr) // 2
+    left_half = arr[:mid]
+    right_half = arr[mid:]
+    
+    left_sums = generate_subset_sums(left_half)
+    right_sums = generate_subset_sums(right_half)
+    
+    for l_sum in left_sums:
+        if (target - l_sum) in right_sums:
+            return True
+    
+    return False
+
+# Example usage
+arr1 = [1, 3, 9, 2, 7, 12]
+target1 = 15
+print(f"Is there a subset with sum exactly {target1}? {can_sum_exactly(arr1, target1)}")
+
+arr2 = [3, 34, 4, 12, 5, 2]
+target2 = 15
+print(f"Is there a subset with sum exactly {target2}? {can_sum_exactly(arr2, target2)}")
