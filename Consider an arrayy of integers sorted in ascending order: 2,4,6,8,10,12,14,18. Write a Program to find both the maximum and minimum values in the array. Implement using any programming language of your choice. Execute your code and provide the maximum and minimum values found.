@@ -1,0 +1,13 @@
+def can_break(s1, s2):
+    sorted_s1 = sorted(s1)
+    sorted_s2 = sorted(s2)
+    
+    can_s1_break_s2 = all(c1 >= c2 for c1, c2 in zip(sorted_s1, sorted_s2))
+    
+    can_s2_break_s1 = all(c2 >= c1 for c1, c2 in zip(sorted_s1, sorted_s2))
+    
+    return can_s1_break_s2 or can_s2_break_s1
+
+s1 = "abc"
+s2 = "xya"
+print(can_break(s1, s2))  
