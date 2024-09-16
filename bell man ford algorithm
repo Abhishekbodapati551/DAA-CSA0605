@@ -1,0 +1,44 @@
+from collections import deque
+
+def optimal_game_result(graph):
+    def is_draw(state, visited):
+        return state in visited
+
+    def bfs():
+        queue = deque()
+        visited = set()
+        
+        initial_state = (1, 2, 0)
+        queue.append(initial_state)
+        visited.add(initial_state)
+        
+        while queue:
+            mouse_pos, cat_pos, turn = queue.popleft()
+            
+            
+            if mouse_pos == 0:
+                return 1  
+            if mouse_pos == cat_pos:
+                return 2  
+            
+        
+            if turn == 0:  
+                for next_mouse_pos in graph[mouse_pos]:
+                    new_state = (next_mouse_pos, cat_pos, 1)
+                    if not is_draw(new_state, visited):
+                        queue.append(new_state)
+                        visited.add(new_state)
+            else:  
+                for next_cat_pos in graph[cat_pos]:
+                    if next_cat_pos != 0:  
+                        new_state = (mouse_pos, next_cat_pos, 0)
+                        if not is_draw(new_state, visited):
+                            queue.append(new_state)
+                            visited.add(new_state)
+        
+        return 0  
+
+    return bfs()
+
+graph = {1: [2, 3], 2: [1, 3], 3: [1, 2]}
+print(optimal_game_result(graph))
