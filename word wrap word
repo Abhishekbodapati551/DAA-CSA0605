@@ -1,0 +1,22 @@
+class WordFilter:
+    def __init__(self, words):
+        # Create a dictionary to store the prefix and suffix combination for each word
+        self.word_map = {}
+        for index, word in enumerate(words):
+            n = len(word)
+            for i in range(n + 1):
+                for j in range(n + 1):
+                    # Store the combination of prefix and suffix in the dictionary
+                    self.word_map[word[:i] + "#" + word[j:]] = index
+
+    def f(self, pref, suff):
+        # Look for the combination of prefix and suffix in the dictionary
+        key = pref + "#" + suff
+        return self.word_map.get(key, -1)
+
+# Example usage:
+words = ["apple"]
+wordFilter = WordFilter(words)
+
+# Call the f() function with prefix "a" and suffix "e"
+print(wordFilter.f("a", "e"))  # Output: 0
