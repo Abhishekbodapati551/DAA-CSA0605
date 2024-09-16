@@ -1,0 +1,25 @@
+def subsets_with_duplicates(nums):
+    def backtrack(start, path):
+        result.append(path[:])
+        
+        for i in range(start, len(nums)):
+            if i > start and nums[i] == nums[i - 1]:
+                continue
+            path.append(nums[i])
+            backtrack(i + 1, path)
+            path.pop()
+
+    nums.sort()
+    result = []
+    backtrack(0, [])
+    return result
+
+def main():
+    A = [1, 2, 3]
+    subsets = subsets_with_duplicates(A)
+    print("Subsets in lexicographical order:")
+    for subset in subsets:
+        print(subset)
+
+if __name__ == "__main__":
+    main()
