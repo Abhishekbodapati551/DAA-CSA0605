@@ -1,0 +1,18 @@
+def subsets_with_duplicates(S):
+    def backtrack(start, path):
+        result.append(path[:])
+        
+        for i in range(start, len(S)):
+            if i > start and S[i] == S[i - 1]:
+                continue
+            path.append(S[i])
+            backtrack(i + 1, path)
+            path.pop()  
+
+    S.sort()  
+    result = []
+    backtrack(0, [])
+    return result
+
+A = [1, 2, 3]
+print(subsets_with_duplicates(A))  
