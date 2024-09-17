@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <string.h>
+
+void minimizeStringValue(char* s) {
+    int len = strlen(s);
+    int freq[26] = {0}; 
+
+    for (int i = 0; i < len; i++) {
+        if (s[i] == '?') {
+            int minFreq = len + 1;
+            char minChar = 'a';
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (freq[c - 'a'] < minFreq) {
+                    minFreq = freq[c - 'a'];
+                    minChar = c;
+                }
+            }
+            s[i] = minChar;
+            freq[minChar - 'a']++;
+        } else {
+            freq[s[i] - 'a']++;
+        }
+    }
+}
+
+void printString(const char* str) {
+    printf("%s\n", str);
+}
+
+int main() {
+    char s[] = "a?b?c?";
+    
+    printf("Original string: ");
+    printString(s);
+    
+    minimizeStringValue(s);
+    
+    printf("Minimized string: ");
+    printString(s);
+    
+    return 0;
+}
