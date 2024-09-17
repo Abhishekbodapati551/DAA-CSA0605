@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 1000  
+
+typedef struct HashSet {
+    int *table;
+    int size;
+} HashSet;
+
+HashSet* createHashSet(int size) {
+    HashSet *set = (HashSet *)malloc(sizeof(HashSet));
+    set->table = (int *)calloc(size, sizeof(int)); 
+    set->size = size;
+    return set;
+}
+
+int hash(int key, int size) {
+    return abs(key) % size;
+}
+
+void addHashSet(HashSet *set, int key) {
+    int index = hash(key, set->size);
+    set->table[index] = key;
+}
+
+int containsHashSet(HashSet *set, int key) {
+    int index = hash(key, set->size);
+    return set->table[index] == key;
+}
+
+int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
+    HashSet *set1 = createHashSet(MAX_SIZE);
+    HashSet *set2 = createHashSet(MAX_SIZE);
+    int *result = (int *)malloc(sizeof(int) * MAX_SIZE);
+    int resultSize = 0;
+
+    for (int i = 0; i < nums1Size; i++) {
+        addHashSet(set1, nums1[i]);
+    }
+
+    for (int i = 0; i < nums2Size; i++) {
+        if (containsHashSet(set1, nums2[i]) && !containsHashSet(set2, nums2[i])) {
+            result[resultSize++] = nums2[i];
+            addHashSet(set2, nums2[i]);
+        }
+    }
+
+    *returnSize = resultSize;
+    free(set1->table);
+    free(set1);
+    free(set2->table);
+    free(set2);
+
+    return result;
+}
+
+int main() {
+    int nums1[] = {1, 2, 2, 1};
+    int nums2[] = {2, 2};
+    int nums1Size = sizeof(nums1) / sizeof(nums1[0]);
+    int nums2Size = sizeof(nums2) / sizeof(nums2[0]);
+
+    int returnSize;
+    int *result = intersection(nums1, nums1Size, nums2, nums2Size, &returnSize);
+
+    printf("Intersection: ");
+    for (int i = 0; i < returnSize; i++) {
+        printf("%d ", result[i]);
+    }
+    printf("\n");
+
+    free(result);
+    return 0;
+}
