@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <limits.h>
+
+int kadane(int* nums, int numsSize) {
+    int max_current = nums[0];
+    int max_global = nums[0];
+
+    for (int i = 1; i < numsSize; i++) {
+        max_current = (nums[i] > max_current + nums[i]) ? nums[i] : max_current + nums[i];
+        if (max_current > max_global) {
+            max_global = max_current;
+        }
+    }
+    return max_global;
+}
+
+int arraySum(int* nums, int numsSize) {
+    int sum = 0;
+    for (int i = 0; i < numsSize; i++) {
+        sum += nums[i];
+    }
+    return sum;
+}
+
+int minSubArraySum(int* nums, int numsSize) {
+    int min_current = nums[0];
+    int min_global = nums[0];
+
+    for (int i = 1; i < numsSize; i++) {
+        min_current = (nums[i] < min_current + nums[i]) ? nums[i] : min_current + nums[i];
+        if (min_current < min_global) {
+            min_global = min_current;
+        }
+    }
+    return min_global;
+}
+
+int maxSubarraySumCircular(int* nums, int numsSize) {
+    if (numsSize == 1) {
+        return nums[0];
+    }
+
+    int max_kadane = kadane(nums, numsSize);
+    int total_sum = arraySum(nums, numsSize);
+    int min_subarray_sum = minSubArraySum(nums, numsSize);
+    int max_circular = total_sum - min_subarray_sum;
+
+    return (max_circular > max_kadane) ? max_circular : max_kadane;
+}
+
+int main() {
+    int nums[] = {5, -3, 5};
+    int numsSize = sizeof(nums) / sizeof(nums[0]);
+
+    int result = maxSubarraySumCircular(nums, numsSize);
+    printf("The maximum sum of a circular subarray is %d\n", result);
+
+    return 0;
+}
