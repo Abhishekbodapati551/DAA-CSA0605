@@ -1,0 +1,9 @@
+def destCity(paths):
+    outgoing_cities = set(cityA for cityA, cityB in paths)
+    
+    for cityA, cityB in paths:
+        if cityB not in outgoing_cities:
+            return cityB
+
+paths = [["London", "New York"], ["New York", "Lima"], ["Lima", "Sao Paulo"]]
+print(destCity(paths))  
