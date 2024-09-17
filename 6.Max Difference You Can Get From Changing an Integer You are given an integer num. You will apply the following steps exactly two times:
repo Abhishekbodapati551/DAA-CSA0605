@@ -1,0 +1,29 @@
+def max_difference(num):
+    num_str = str(num)
+    
+    def get_max_num(num_str, x, y):
+        return int(''.join(y if digit == x else digit for digit in num_str))
+    
+    def get_min_num(num_str, x, y):
+        new_num_str = ''.join(y if digit == x else digit for digit in num_str)
+        if new_num_str[0] == '0':
+            new_num_str = '1' + new_num_str[1:]
+        return int(new_num_str) if new_num_str != '0' else 1
+    
+    digits = set(num_str)
+    max_diff = 0
+    
+    for x in digits:
+        for y in digits:
+            if x != y:
+                max_num_1 = get_max_num(num_str, x, y)
+                for x2 in digits:
+                    for y2 in digits:
+                        if x2 != y2:
+                            min_num_2 = get_min_num(num_str, x2, y2)
+                            max_diff = max(max_diff, abs(max_num_1 - min_num_2))
+    
+    return max_diff
+
+num = 123456
+print(max_difference(num)) 
