@@ -1,0 +1,12 @@
+def swap_indices(s, pairs):
+    char_list = list(s)
+    
+    for a, b in pairs:
+        char_list[a], char_list[b] = char_list[b], char_list[a]
+    
+    return ''.join(char_list)
+
+s = "abcdef"
+pairs = [[0, 1], [2, 3], [0, 4]]
+result = swap_indices(s, pairs)
+print(result)  
