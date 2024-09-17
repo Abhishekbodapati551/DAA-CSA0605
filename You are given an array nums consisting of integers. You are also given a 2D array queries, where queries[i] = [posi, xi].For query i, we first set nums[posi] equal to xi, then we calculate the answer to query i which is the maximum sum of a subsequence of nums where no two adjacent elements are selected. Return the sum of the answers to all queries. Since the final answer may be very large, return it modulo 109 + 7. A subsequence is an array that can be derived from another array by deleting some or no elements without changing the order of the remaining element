@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MOD 1000000007
+
+long long maxNonAdjacentSum(int* nums, int numsSize) {
+    if (numsSize == 0) return 0;
+    if (numsSize == 1) return nums[0];
+    
+    long long prev1 = nums[0]; // dp[i-1]
+    long long prev2 = 0;       // dp[i-2]
+    
+    for (int i = 1; i < numsSize; i++) {
+        long long current = (nums[i] + prev2 > prev1) ? (nums[i] + prev2) : prev1;
+        prev2 = prev1;
+        prev1 = current;
+    }
+    
+    return prev1;
+}
+
+long long handleQueries(int* nums, int numsSize, int** queries, int queriesSize) {
+    long long totalSum = 0;
+
+    for (int i = 0; i < queriesSize; i++) {
+        int pos = queries[i][0];
+        int newValue = queries[i][1];
+        
+        nums[pos] = newValue; 
+        
+        long long maxSum = maxNonAdjacentSum(nums, numsSize); 
+        totalSum = (totalSum + maxSum) % MOD; 
+    }
+    
+    return totalSum;
+}
+
+int main() {
+    int nums[] = {1, 2, 3, 4, 5};
+    int numsSize = sizeof(nums) / sizeof(nums[0]);
+    
+    int queriesSize = 2;
+    int* queries[2];
+    
+    queries[0] = (int*)malloc(2 * sizeof(int));
+    queries[0][0] = 2;
+    queries[0][1] = 10;
+    
+    queries[1] = (int*)malloc(2 * sizeof(int));
+    queries[1][0] = 1;
+    queries[1][1] = 20;
+    
+    long long result = handleQueries(nums, numsSize, queries, queriesSize);
+    
+    printf("The sum of the answers to all queries is %lld\n", result);
+    
+    for (int i = 0; i < queriesSize; i++) {
+        free(queries[i]);
+    }
+    
+    return 0;
+}
