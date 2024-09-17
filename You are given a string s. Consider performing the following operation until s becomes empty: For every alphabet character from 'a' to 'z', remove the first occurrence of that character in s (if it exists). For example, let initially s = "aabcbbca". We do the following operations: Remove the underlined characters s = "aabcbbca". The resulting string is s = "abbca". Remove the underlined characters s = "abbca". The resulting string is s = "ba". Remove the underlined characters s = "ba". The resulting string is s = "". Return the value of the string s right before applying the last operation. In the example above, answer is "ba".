@@ -1,0 +1,46 @@
+#include <stdio.h>
+
+void removeFirstOccurrence(char* s, char ch) {
+    int len = strlen(s);
+    for (int i = 0; i < len; i++) {
+        if (s[i] == ch) {
+            for (int j = i; j < len - 1; j++) {
+                s[j] = s[j + 1];
+            }
+            s[len - 1] = '\0'; 
+            break;
+        }
+    }
+}
+
+void findStringBeforeLastOperation(char* s) {
+    int len = strlen(s);
+    char lastState[len + 1];
+    strcpy(lastState, s);
+
+    while (len > 0) {
+        int i;
+        for (i = 0; i < 26; i++) {
+            char ch = 'a' + i;
+            if (strchr(s, ch) != NULL) {
+                strcpy(lastState, s);
+                removeFirstOccurrence(s, ch);
+                len = strlen(s);
+            }
+        }
+        if (len == 0) {
+            break;
+        }
+    }
+
+    printf("String right before the last operation: %s\n", lastState);
+}
+
+int main() {
+    char s[] = "aabcbbca";
+    
+    printf("Original string: %s\n", s);
+    findStringBeforeLastOperation(s);
+    
+    return 0;
+}
