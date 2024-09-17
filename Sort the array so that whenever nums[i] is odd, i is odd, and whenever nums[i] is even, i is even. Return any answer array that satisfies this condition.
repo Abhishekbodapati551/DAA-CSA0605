@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void rearrangeOddEven(int* nums, int numsSize) {
+    int* odds = (int*)malloc(numsSize * sizeof(int));
+    int* evens = (int*)malloc(numsSize * sizeof(int));
+    int oddCount = 0, evenCount = 0;
+
+    for (int i = 0; i < numsSize; i++) {
+        if (nums[i] % 2 == 0) {
+            evens[evenCount++] = nums[i];
+        } else {
+            odds[oddCount++] = nums[i];
+        }
+    }
+
+    int oddIndex = 1;
+    int evenIndex = 0;
+
+    for (int i = 0; i < numsSize; i++) {
+        if (i % 2 == 0) {
+            if (evenIndex < evenCount) {
+                nums[i] = evens[evenIndex++];
+            }
+        } else {
+            if (oddIndex < oddCount) {
+                nums[i] = odds[oddIndex++];
+            }
+        }
+    }
+
+    free(odds);
+    free(evens);
+}
+
+void printArray(int* arr, int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int nums[] = {4, 2, 5, 7, 6, 9};
+    int numsSize = sizeof(nums) / sizeof(nums[0]);
+
+    printf("Original array:\n");
+    printArray(nums, numsSize);
+
+    rearrangeOddEven(nums, numsSize);
+
+    printf("Rearranged array:\n");
+    printArray(nums, numsSize);
+
+    return 0;
+}
